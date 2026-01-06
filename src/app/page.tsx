@@ -57,6 +57,7 @@ const plans = [
     cadence: 'Pour démarrer sans engagement',
     features: ['1 analyse complète incluse', 'Suggestions clés + prochaines étapes', 'Historique accessible 7 jours'],
     cta: 'Commencer gratuitement',
+    href: '/register',
     highlight: false,
   },
   {
@@ -66,6 +67,7 @@ const plans = [
     cadence: 'Idéal pour un suivi continu',
     features: ['Jusqu’à 5 analyses premium', 'Résultats enrichis et conseils IA', 'Support prioritaire 7j/7'],
     cta: 'Passer en Pro',
+    href: '/register?plan=pro',
     highlight: true,
   },
   {
@@ -75,6 +77,7 @@ const plans = [
     cadence: 'Pour les équipes ambitieuses',
     features: ['Accès multi-utilisateurs', 'SLA & reporting avancé', 'Onboarding personnalisé'],
     cta: 'Contacter l’équipe',
+    href: '/history',
     highlight: false,
   },
 ];
@@ -352,15 +355,16 @@ export default function Home() {
                     <li key={feature}>• {feature}</li>
                   ))}
                 </ul>
-                <button
+                <Link
+                  href={plan.href}
                   className={
                     plan.highlight
-                      ? 'mt-auto bg-white text-black px-6 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all'
-                      : 'mt-auto bg-white/10 border border-white/10 px-6 py-3 rounded-xl hover:bg-white/20 transition-all'
+                      ? 'mt-auto bg-white text-black px-6 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all text-center'
+                      : 'mt-auto bg-white/10 border border-white/10 px-6 py-3 rounded-xl hover:bg-white/20 transition-all text-center'
                   }
                 >
                   {plan.cta}
-                </button>
+                </Link>
               </div>
             ))}
           </div>
