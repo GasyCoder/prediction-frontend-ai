@@ -16,7 +16,12 @@ export default function History() {
     try {
       const res = await apiFetch('/predictions');
       const data = await res.json();
-      setPredictions(data.data);
+      const nextPredictions = Array.isArray(data?.data)
+        ? data.data
+        : Array.isArray(data)
+          ? data
+          : [];
+      setPredictions(nextPredictions);
     } catch (err) {
       console.error(err);
     } finally {
