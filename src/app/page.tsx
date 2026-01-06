@@ -104,7 +104,7 @@ export default function Home() {
       setCategories(data);
     } catch (err) {
       console.error(err);
-      setErrorMessage("Impossible de charger les catégories pour le moment.");
+      setErrorMessage('Chargement des catégories indisponible, voici une sélection par défaut.');
     } finally {
       setLoading(false);
     }
@@ -249,8 +249,8 @@ export default function Home() {
             Nos services de prédiction
             <div className="h-px bg-white/10 flex-1" />
           </h2>
-          {errorMessage && (
-            <div className="mb-8 rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-4 text-red-200">
+          {errorMessage && categories.length === 0 && (
+            <div className="mb-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-6 py-4 text-amber-100">
               {errorMessage}
             </div>
           )}
