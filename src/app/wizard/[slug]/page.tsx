@@ -33,6 +33,7 @@ export default function Wizard({ params }: { params: Promise<{ slug: string }> }
   const [answers, setAnswers] = useState<Record<number, any>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,16 +47,35 @@ export default function Wizard({ params }: { params: Promise<{ slug: string }> }
   const fetchQuestionnaire = async () => {
     try {
       const res = await apiFetch(`/categories/${slug}/questionnaire`);
+      if (!res.ok) {
+        setError('Impossible de charger le questionnaire. Veuillez vérifier que la catégorie existe.');
+        return;
+      }
       const data = await res.json();
-      setQuestionnaire(data.questionnaire);
+      if (!data.questionnaire) {
+        setError('Aucun questionnaire actif trouvé pour cette catégorie.');
+      } else {
+        setQuestionnaire(data.questionnaire);
+      }
     } catch (err) {
       console.error(err);
+      setError('Une erreur réseau est survenue.');
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading || !questionnaire) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Initialisation...</div>;
+  if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Initialisation...</div>;
+
+  if (error || !questionnaire) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white p-6 text-center">
+        <h1 className="text-2xl font-bold text-red-500 mb-4">Erreur</h1>
+        <p className="text-gray-400 mb-8 max-w-md">{error || 'Questionnaire non trouvé'}</p>
+        <button onClick={() => router.push('/')} className="bg-white/10 px-6 py-2 rounded-xl">Retour à l'accueil</button>
+      </div>
+    );
+  }
 
   const questions = questionnaire.questions.filter(q => q.step === currentStep);
   const totalSteps = Math.max(...questionnaire.questions.map(q => q.step));
