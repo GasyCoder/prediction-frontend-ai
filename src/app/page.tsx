@@ -16,10 +16,15 @@ interface Category {
 export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    setIsLoggedIn(auth.isLoggedIn());
   }, []);
 
   const fetchCategories = async () => {
@@ -36,6 +41,7 @@ export default function Home() {
 
   const handleLogout = () => {
     auth.logout();
+    setIsLoggedIn(false);
     router.refresh();
   };
 
@@ -49,7 +55,7 @@ export default function Home() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/history" className="text-gray-400 hover:text-white transition-colors">Historique</Link>
-            {auth.isLoggedIn() ? (
+            {isLoggedIn ? (
               <button 
                 onClick={handleLogout}
                 className="bg-white/5 border border-white/10 px-4 py-2 rounded-lg hover:bg-white/10 transition-all"
@@ -113,6 +119,83 @@ export default function Home() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="pb-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+            <div>
+              <p className="text-sm uppercase tracking-[0.3em] text-purple-400 mb-3">Abonnements</p>
+              <h2 className="text-3xl md:text-4xl font-black">Choisissez votre pack de crédits</h2>
+              <p className="text-gray-400 mt-4 max-w-2xl">
+                Chaque crédit débloque une prédiction IA. Commencez gratuitement, puis passez à un plan pro
+                pour des analyses plus poussées et un suivi prioritaire.
+              </p>
+            </div>
+            <Link
+              href="/history"
+              className="inline-flex items-center justify-center bg-white/5 border border-white/10 px-6 py-3 rounded-xl hover:bg-white/10 transition-all"
+            >
+              Voir mon historique
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col gap-6">
+              <div>
+                <p className="text-sm uppercase tracking-widest text-gray-400">Découverte</p>
+                <h3 className="text-3xl font-bold mt-2">300 crédits</h3>
+                <p className="text-gray-400 mt-2">Parfait pour tester Predictly AI.</p>
+              </div>
+              <div className="text-4xl font-black">Gratuit</div>
+              <ul className="space-y-3 text-gray-300">
+                <li>• 1 analyse complète incluse</li>
+                <li>• Suggestions clés + prochaines étapes</li>
+                <li>• Historique accessible 7 jours</li>
+              </ul>
+              <button className="mt-auto bg-white/10 border border-white/10 px-6 py-3 rounded-xl hover:bg-white/20 transition-all">
+                Commencer gratuitement
+              </button>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-900/60 to-blue-900/40 border border-purple-500/40 rounded-3xl p-8 flex flex-col gap-6 shadow-xl shadow-purple-500/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm uppercase tracking-widest text-purple-200">Pro</p>
+                  <h3 className="text-3xl font-bold mt-2">1 500 crédits</h3>
+                </div>
+                <span className="text-xs uppercase tracking-widest bg-white/10 text-white px-3 py-1 rounded-full">Recommandé</span>
+              </div>
+              <div className="text-4xl font-black">29 € / mois</div>
+              <ul className="space-y-3 text-gray-200">
+                <li>• Jusqu’à 5 analyses premium</li>
+                <li>• Résultats enrichis et conseils IA</li>
+                <li>• Support prioritaire 7j/7</li>
+              </ul>
+              <button className="mt-auto bg-white text-black px-6 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all">
+                Passer en Pro
+              </button>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col gap-6">
+              <div>
+                <p className="text-sm uppercase tracking-widest text-gray-400">Entreprise</p>
+                <h3 className="text-3xl font-bold mt-2">Crédits illimités</h3>
+                <p className="text-gray-400 mt-2">Pour équipes et établissements.</p>
+              </div>
+              <div className="text-4xl font-black">Sur devis</div>
+              <ul className="space-y-3 text-gray-300">
+                <li>• Accès multi-utilisateurs</li>
+                <li>• SLA & reporting avancé</li>
+                <li>• Onboarding personnalisé</li>
+              </ul>
+              <button className="mt-auto bg-white/10 border border-white/10 px-6 py-3 rounded-xl hover:bg-white/20 transition-all">
+                Contacter l’équipe
+              </button>
+            </div>
+          </div>
         </div>
       </section>
     </div>
