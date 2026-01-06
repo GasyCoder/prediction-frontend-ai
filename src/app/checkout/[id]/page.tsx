@@ -104,12 +104,20 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
         <div className="max-w-md bg-white/5 border border-white/10 rounded-3xl p-8">
           <h1 className="text-2xl font-bold mb-4">Commande introuvable</h1>
           <p className="text-gray-400 mb-6">{error ?? 'Veuillez relancer votre analyse.'}</p>
-          <button
-            onClick={() => router.push('/history')}
-            className="px-6 py-3 rounded-xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all"
-          >
-            Retour à l'historique
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => router.back()}
+              className="px-6 py-3 rounded-xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all"
+            >
+              Retour
+            </button>
+            <button
+              onClick={() => router.push('/history')}
+              className="px-6 py-3 rounded-xl bg-white text-black hover:opacity-90 transition-all"
+            >
+              Aller à l'historique
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -118,6 +126,20 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
   return (
     <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center p-6">
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8">
+        <div className="lg:col-span-2 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
+          >
+            ← Retour
+          </button>
+          <button
+            onClick={() => router.push('/history')}
+            className="text-sm text-gray-400 hover:text-white transition-colors"
+          >
+            Historique
+          </button>
+        </div>
         <div className="bg-white/5 border border-white/10 rounded-3xl p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full -mr-16 -mt-16"></div>
           
