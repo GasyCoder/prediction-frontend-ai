@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import { apiFetch } from '@/lib/api';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { auth } from '@/lib/auth';
 
 interface Option {
@@ -26,8 +26,9 @@ interface Questionnaire {
   questions: Question[];
 }
 
-export default function Wizard({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+export default function Wizard() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [answers, setAnswers] = useState<Record<number, any>>({});
@@ -65,7 +66,14 @@ export default function Wizard({ params }: { params: Promise<{ slug: string }> }
     }
   };
 
-  if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Initialisation...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white p-6">
+        <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="animate-pulse">Analyse de la catégorie {slug}...</p>
+      </div>
+    );
+  }
 
   if (error || !questionnaire) {
     return (
