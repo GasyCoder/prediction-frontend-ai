@@ -128,6 +128,9 @@ export default function Wizard() {
             <h1 className="text-4xl font-black">{questionnaire.title}</h1>
             <span className="text-purple-400 font-mono">Étape {currentStep} sur {totalSteps}</span>
           </div>
+          <p className="text-gray-400 max-w-2xl">
+            Répondez avec précision pour obtenir des prédictions claires et actionnables. Chaque réponse affine le modèle.
+          </p>
           <div className="h-2 bg-white/5 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500" 
@@ -136,7 +139,16 @@ export default function Wizard() {
           </div>
         </div>
 
-        <div className="space-y-12">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-gray-300">
+          <p className="font-semibold text-white mb-2">Guide rapide</p>
+          <ul className="grid gap-2 md:grid-cols-3">
+            <li>1. Répondez à toutes les questions.</li>
+            <li>2. Vérifiez votre progression en haut de l'écran.</li>
+            <li>3. Finalisez pour accéder au paiement sécurisé.</li>
+          </ul>
+        </div>
+
+        <div className="space-y-12 mt-12">
           {questions.map((q) => (
             <div key={q.id} className="bg-white/5 border border-white/10 rounded-3xl p-8">
               <h3 className="text-xl font-bold mb-6">{q.label}</h3>

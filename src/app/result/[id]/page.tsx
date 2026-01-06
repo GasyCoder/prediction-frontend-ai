@@ -65,6 +65,8 @@ export default function Result({ params }: { params: Promise<{ id: string }> }) 
   const profile = resJson?.profile ?? 'Analyse personnalisée';
   const workEnvironment = resJson?.work_environment ?? 'Détails non disponibles pour le moment.';
   const disclaimer = resJson?.disclaimer ?? 'Résultats générés automatiquement, à utiliser comme guide.';
+  const categoryName = request?.category?.name ?? 'Catégorie personnalisée';
+  const createdAt = request?.created_at ? new Date(request.created_at).toLocaleDateString() : null;
   const hasResults = suggestions.length > 0 || nextSteps.length > 0;
 
   return (
@@ -80,8 +82,16 @@ export default function Result({ params }: { params: Promise<{ id: string }> }) 
         </div>
 
         <header className="mb-16">
+          <p className="text-sm uppercase tracking-[0.2em] text-purple-400 mb-4">Analyse IA</p>
           <h1 className="text-5xl font-black mb-4">Votre Profil : {profile}</h1>
           <p className="text-xl text-gray-400">{workEnvironment}</p>
+          <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-400">
+            <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10">Catégorie : {categoryName}</span>
+            {createdAt ? (
+              <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10">Créée le {createdAt}</span>
+            ) : null}
+            <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10">Basé sur vos réponses</span>
+          </div>
         </header>
 
         {!hasResults ? (
