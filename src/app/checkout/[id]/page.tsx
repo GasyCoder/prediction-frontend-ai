@@ -24,7 +24,12 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
         return;
       }
       const data = await res.json();
-      setRequest(data);
+      const nextRequest = data?.data ?? data?.prediction ?? data;
+      if (!nextRequest) {
+        setError('Commande introuvable.');
+        return;
+      }
+      setRequest(nextRequest);
     } catch (err) {
       console.error(err);
       setError('Erreur réseau lors du chargement.');
@@ -67,7 +72,30 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-black flex items-center justify-center text-white">Chargement...</div>;
+    return (
+      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center p-6">
+        <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8">
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-10 animate-pulse space-y-6">
+            <div className="h-8 w-2/3 bg-white/10 rounded-xl"></div>
+            <div className="h-4 w-1/2 bg-white/10 rounded-xl"></div>
+            <div className="space-y-4">
+              <div className="h-5 w-full bg-white/10 rounded-xl"></div>
+              <div className="h-5 w-full bg-white/10 rounded-xl"></div>
+              <div className="h-10 w-full bg-white/10 rounded-xl"></div>
+            </div>
+            <div className="h-14 w-full bg-white/10 rounded-2xl"></div>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-10 animate-pulse space-y-6">
+            <div className="h-6 w-1/2 bg-white/10 rounded-xl"></div>
+            <div className="space-y-4">
+              <div className="h-4 w-full bg-white/10 rounded-xl"></div>
+              <div className="h-4 w-full bg-white/10 rounded-xl"></div>
+              <div className="h-4 w-3/4 bg-white/10 rounded-xl"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!request) {
@@ -93,9 +121,11 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
         <div className="bg-white/5 border border-white/10 rounded-3xl p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full -mr-16 -mt-16"></div>
           
-          <h1 className="text-3xl font-black mb-2">Finalisez votre commande</h1>
+          <p className="text-sm uppercase tracking-[0.25em] text-purple-400 mb-4">Checkout sécurisé</p>
+          <h1 className="text-3xl font-black mb-3">Finalisez votre commande</h1>
           <p className="text-gray-400 mb-10">
-            Paiement sécurisé via Stripe. Utilisez une carte de test pour valider votre parcours client.
+            Payez en toute sécurité et accédez immédiatement à vos résultats. Chaque crédit
+            débloque une prédiction IA personnalisée.
           </p>
 
           <div className="space-y-4 mb-10">
@@ -103,17 +133,26 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
               <span className="text-gray-400">Service</span>
               <span className="font-bold">Analyse de profil - {request.category?.name}</span>
             </div>
+            <div className="flex justify-between items-center py-4 border-b border-white/5">
+              <span className="text-gray-400">Pack de crédits</span>
+              <span className="font-bold">Plan Essentiel</span>
+            </div>
             <div className="flex justify-between items-center py-4">
               <span className="text-gray-400">Total à payer</span>
               <span className="text-3xl font-black text-white">{request.total_amount} {request.currency}</span>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-gray-300 mb-8">
-            <p className="font-semibold text-white mb-3">Cartes de test Stripe</p>
-            <p>✅ Paiement accepté : 4242 4242 4242 4242</p>
-            <p>❌ Paiement refusé : 4000 0000 0000 0002</p>
-            <p className="mt-3 text-gray-400">Utilisez une date future (ex: 12/34) et un CVC valide.</p>
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-6 text-sm text-gray-300 mb-8">
+            <div className="flex items-center justify-between mb-3">
+              <p className="font-semibold text-white">Avantages inclus</p>
+              <span className="text-xs uppercase tracking-widest text-purple-300">Pro</span>
+            </div>
+            <ul className="space-y-2">
+              <li>• Résultats IA détaillés en moins de 2 minutes.</li>
+              <li>• Suggestions actionnables + prochaines étapes claires.</li>
+              <li>• Historique sécurisé et accessible à tout moment.</li>
+            </ul>
           </div>
 
           <button
