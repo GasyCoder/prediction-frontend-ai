@@ -16,10 +16,15 @@ interface Category {
 export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    setIsLoggedIn(auth.isLoggedIn());
   }, []);
 
   const fetchCategories = async () => {
@@ -36,6 +41,7 @@ export default function Home() {
 
   const handleLogout = () => {
     auth.logout();
+    setIsLoggedIn(false);
     router.refresh();
   };
 
@@ -49,7 +55,7 @@ export default function Home() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/history" className="text-gray-400 hover:text-white transition-colors">Historique</Link>
-            {auth.isLoggedIn() ? (
+            {isLoggedIn ? (
               <button 
                 onClick={handleLogout}
                 className="bg-white/5 border border-white/10 px-4 py-2 rounded-lg hover:bg-white/10 transition-all"

@@ -66,7 +66,7 @@ export default function Checkout({ params }: { params: Promise<{ id: string }> }
         </button>
 
         <p className="mt-8 text-center text-sm text-gray-500">
-          Paiement sécurisé via FakePay Simulator
+          Paiement sécurisé via Stripe (mode test)
         </p>
       </div>
     </div>
